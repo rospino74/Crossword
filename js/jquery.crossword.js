@@ -26,7 +26,7 @@
 			
 			// append clues markup after puzzle wrapper div
 			// This should be moved into a configuration object
-			this.after('<aside class="puzzle-clues"><h2 class="title">Orizzontali</h2><ul class="across"></ul><h2 class="title">Verticali</h2><ul class="down"></ul></aside>');
+			$('aside.puzzle-clues').append('<h2 class="title">Orizzontali</h2><ul class="across"></ul><h2 class="title">Verticali</h2><ul class="down"></ul>');
 			
 			// initialize some variables
 			var tbl = ['<table class="puzzle">'],
