@@ -38,5 +38,29 @@
        "orientation": "down",
        "startx": 7,
        "starty": 1
-       }
+       },
+       {
+        "clue": "Infinito di \"Amo\"",
+        "answer": "amare",
+        "position": 3,
+        "orientation": "across",
+        "startx": 1,
+        "starty": 6
+        },
+       {
+        "clue": "Sono tuoi __",
+        "answer": "amici",
+        "position": 4,
+        "orientation": "across",
+        "startx": 3,
+        "starty": 2
+        },
+        {
+         "clue": "Sono nei parchi",
+         "answer": "aiuole",
+         "position": 4,
+         "orientation": "down",
+         "startx": 5,
+         "starty": 1
+         }
 ] 
