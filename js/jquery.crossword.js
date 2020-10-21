@@ -4,7 +4,7 @@
 *
 */
 (function($){
-	$.fn.crossword = function(entryData) {
+	$.fn.crossword = function(entryData, callback) {
 			/*
 				Qurossword Puzzle: a javascript + jQuery crossword puzzle
 				"light" refers to a white box - or an input
@@ -20,17 +20,18 @@
 				- Answers are best provided in lower-case, and can NOT have spaces - will add support for that later
 			*/
 			
-			var puzz = {}; // put data array in object literal to namespace it into safety
+			const puzz = {}; // put data array in object literal to namespace it into safety
 			puzz.data = entryData;
+			puzz.onWon = callback;
 			
 			// append clues markup after puzzle wrapper div
 			// This should be moved into a configuration object
-			this.after('<div id="puzzle-clues"><h2>Across</h2><ol id="across"></ol><h2>Down</h2><ol id="down"></ol></div>');
+			this.after('<aside class="puzzle-clues"><h2 class="title">Orizzontali</h2><ul class="across"></ul><h2 class="title">Verticali</h2><ul class="down"></ul></aside>');
 			
 			// initialize some variables
-			var tbl = ['<table id="puzzle">'],
+			var tbl = ['<table class="puzzle">'],
 			    puzzEl = this,
-				clues = $('#puzzle-clues'),
+				clues = $('aside.puzzle-clues'),
 				clueLiEls,
 				coords,
 				entryCount = puzz.data.length,
@@ -54,14 +55,11 @@
 					currOri = 'across'; // app's init orientation could move to config object
 					
 					// Reorder the problems array ascending by POSITION
-					puzz.data.sort(function(a,b) {
-						return a.position - b.position;
-					});
+					puzz.data.sort((a, b) => a.position - b.position);
 
 					// Set keyup handlers for the 'entry' inputs that will be added presently
-					puzzEl.delegate('input', 'keyup', function(e){
+					puzzEl.delegate('input', 'keyup', (e) => {
 						mode = 'interacting';
-						
 						
 						// need to figure out orientation up front, before we attempt to highlight an entry
 						switch(e.which) {
@@ -99,7 +97,7 @@
 							return false;
 						} else {
 							
-							console.log('input keyup: '+solvedToggle);
+							console.log('input keyup: ' + solvedToggle);
 							
 							puzInit.checkAnswer(e);
 
@@ -110,12 +108,13 @@
 					});
 			
 					// tab navigation handler setup
-					puzzEl.delegate('input', 'keydown', function(e) {
+					puzzEl.delegate('input', 'keydown', (e) => {
 
 						if ( e.keyCode === 9) {
 							
 							mode = "setting ui";
-							if (solvedToggle) solvedToggle = false;
+							if (solvedToggle)
+								solvedToggle = false;
 
 							//puzInit.checkAnswer(e)
 							nav.updateByEntry(e);
@@ -129,7 +128,7 @@
 					});
 					
 					// tab navigation handler setup
-					puzzEl.delegate('input', 'click', function(e) {
+					puzzEl.delegate('input', 'click', (e) => {
 						mode = "setting ui";
 						if (solvedToggle) solvedToggle = false;
 
@@ -142,7 +141,7 @@
 					
 					
 					// click/tab clues 'navigation' handler setup
-					clues.delegate('li', 'click', function(e) {
+					clues.delegate('li', 'click', (e) => {
 						mode = 'setting ui';
 						
 						if (!e.keyCode) {
@@ -153,7 +152,7 @@
 					
 					
 					// highlight the letter in selected 'light' - better ux than making user highlight letter with second action
-					puzzEl.delegate('#puzzle', 'click', function(e) {
+					puzzEl.delegate('table.puzzle', 'click', (e) => {
 						$(e.target).focus();
 						$(e.target).select();
 					});
@@ -162,8 +161,8 @@
 					puzInit.calcCoords();
 					
 					// Puzzle clues added to DOM in calcCoords(), so now immediately put mouse focus on first clue
-					clueLiEls = $('#puzzle-clues li');
-					$('#' + currOri + ' li' ).eq(0).addClass('clues-active').focus();
+					clueLiEls = $('aside.puzzle-clues li');
+					$('aside.puzzle-clues .' + currOri + ' li' ).eq(0).addClass('clues-active').focus();
 				
 					// DELETE FOR BG
 					puzInit.buildTable();
@@ -191,7 +190,7 @@
 						}
 
 						// while we're in here, add clues to DOM!
-						$('#' + puzz.data[i].orientation).append('<li tabindex="1" data-position="' + i + '">' + puzz.data[i].clue + '</li>'); 
+						$('aside.puzzle-clues .' + puzz.data[i].orientation).append('<li class="clue" tabindex="1" data-position="' + i + '"><span class="number">' + puzz.data[i].position + '. </span>' + puzz.data[i].clue + '</li>'); 
 					}				
 					
 					// Calculate rows/cols by finding max coords of each entry, then picking the highest
@@ -230,7 +229,7 @@
 					- Adds tabindexes to <inputs> 
 				*/
 				buildEntries: function() {
-					var puzzCells = $('#puzzle td'),
+					var puzzCells = $('table.puzzle td'),
 						light,
 						$groupedLights,
 						hasOffset = false,
@@ -265,7 +264,7 @@
 						$groupedLights = $('.entry-' + i);
 						if(!$('.entry-' + i +':eq(0) span').length){
 							$groupedLights.eq(0)
-								.append('<span>' + puzz.data[i].position + '</span>');
+								.append('<span class="' + puzz.data[i].orientation + '">' + puzz.data[i].position + '</span>');
 						}
 					}	
 					
@@ -308,6 +307,14 @@
 
 						solved.push(valToCheck);
 						solvedToggle = true;
+						
+						//Updading the progressbar
+						util.updateProgessbar();
+						
+						//If the user win this will invoke the callback
+						if(util.hasWon() && puzz.onWon)
+							puzz.onWon();
+						
 						return;
 					}
 					
@@ -323,8 +330,7 @@
 			}; // end puzInit object
 			
 
-			var nav = {
-				
+			const nav = {
 				nextPrevNav: function(e, override) {
 
 					var len = $actives.length,
@@ -407,7 +413,7 @@
 					$('.active').eq(0).addClass('current');
 					
 					// store orientation for 'smart' auto-selecting next input
-					currOri = $('.clues-active').parent('ol').prop('id');
+					currOri = $('.clues-active').parent('ol').prop('class');
 										
 					activeClueIndex = $(clueLiEls).index(e.target);
 					//console.log('updateByNav() activeClueIndex: '+activeClueIndex);
@@ -425,7 +431,7 @@
 						$('.clues-active').removeClass('.clues-active');
 												
 						next = $(clueLiEls[activeClueIndex]);
-						currOri = next.parent().prop('id');
+						currOri = next.parent().prop('class');
 						activePosition = $(next).data('position');
 												
 						// skips over already-solved problems
@@ -441,7 +447,7 @@
 						clue = $(clueLiEls + '[data-position=' + activePosition + ']');
 						activeClueIndex = $(clueLiEls).index(clue);
 						
-						currOri = clue.parent().prop('id');
+						currOri = clue.parent().prop('class');
 						
 					}
 						
@@ -455,7 +461,7 @@
 			}; // end nav object
 
 			
-			var util = {
+			const util = {
 				highlightEntry: function() {
 					// this routine needs to be smarter because it doesn't need to fire every time, only
 					// when activePosition changes
@@ -478,7 +484,8 @@
 				},
 				
 				getClasses: function(light, type) {
-					if (!light.length) return false;
+					if (!light.length)
+						return false;
 					
 					var classes = $(light).prop('class').split(' '),
 					classLen = classes.length,
@@ -486,7 +493,7 @@
 
 					// pluck out just the position classes
 					for(var i=0; i < classLen; ++i){
-						if (!classes[i].indexOf(type) ) {
+						if (!classes[i].indexOf(type)) {
 							positions.push(classes[i]);
 						}
 					}
@@ -494,7 +501,7 @@
 					return positions;
 				},
 
-				getActivePositionFromClassGroup: function(el){
+				getActivePositionFromClassGroup: function(el) {
 
 						classes = util.getClasses($(el).parent(), 'position');
 
@@ -541,14 +548,19 @@
 					} else {
 						return false;
 					}
+				},
+				
+				hasWon: function() {
+					return solved.length >= entryCount;						
+				},
+				
+				updateProgessbar: function() {
+						return;
 				}
 				
 			}; // end util object
 
 				
-			puzInit.init();
-	
-							
+			puzInit.init();			
 	}
-	
 })(jQuery);
