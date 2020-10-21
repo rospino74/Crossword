@@ -312,8 +312,19 @@
 						util.updateProgessbar();
 						
 						//If the user win this will invoke the callback
-						if(util.hasWon() && puzz.onWon)
+						if(util.hasWon() && puzz.onWon) {
+							//Disabling old eventHandlers
+							puzzEl.undelegate('input', 'keydown keyup click');
+
+							//And replacing them
+							puzzEl.delegate('input', 'keydown keyup click', (e) => {
+								e.preventDefault();
+								return false;
+							});
+
+							//Calling the callback
 							puzz.onWon();
+						}
 						
 						return;
 					}
