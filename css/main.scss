@@ -1,0 +1,141 @@
+html {
+	/*
+		Deafult colors
+	*/
+	--white-color: hsl(0, 0%, 85%);
+	--light-white-color: hsl(0, 0%, 100%);
+	--black-color: hsl(0, 0%, 20%);
+	--light-black-color: hsl(0, 0%, 35%);
+	--accent-color: hsl(220, 50%, 50%);
+	--text-color: hsl(0, 0%, 20%);
+	
+	/*
+		Transition for theme change
+	*/
+	transition: color 0.2s ease-in-out, background 0.2s ease-in-out;
+
+	&.dark {
+		/*
+			Dark mode colors
+		*/
+
+		--white-color: hsl(0, 0%, 29.4%);
+		--light-white-color: hsl(220, 8%, 14%);
+		--black-color: hsl(0, 0%, 11%);
+		--accent-color: hsl(220, 75%, 50%);
+		--text-color: hsl(220, 50%, 85%);
+	}
+
+
+	background-color: var(--light-white-color);
+	font: 62.5%/1.3em Helvetica, sans-serif;
+	width: 100%;
+	height: 100%;
+
+	body {
+		box-sizing: border-box;
+		margin: 10px auto;
+	}
+}
+
+.puzzle-wrapper {
+	float: left;
+	width: 54%;
+	margin: auto 3%;
+
+	table.puzzle { 
+		border-collapse: collapse; 
+		border-spacing: 0; 
+		border-radius: 5px;
+		max-width: 100%;
+
+		tr {
+			width: 100%;
+		}
+		
+		td {
+			width: 5em;
+			height: 5em;
+			border: 1px solid var(--black-color);
+			padding: 0;
+			margin: 0;
+			background-color: var(--black-color);
+			position: relative;
+
+			input {
+				width: 100%;
+				height: 100%;
+				padding: 0em;
+				border: none;
+				text-align: center;
+				font-size: 3em;
+				color: var(--text-color);
+				background-color: var(--white-color);
+			
+				&:focus {
+					background-color: var(--light-white-color);
+				}
+
+				&.done {
+					font-weight: bold;
+					color: var(--accent-color);
+					user-select: none;
+				}
+			}
+		
+			span {
+				color: var(--text-color);
+				font-size: 0.8em;
+				position: absolute;
+				left: 1px;
+				user-select: none;
+			
+				&.across {
+					bottom: -1px;
+				}
+				&.down {
+					top: -1px;
+				}
+			}
+		}
+	}
+}
+
+.active, .clues-active {
+	background-color: var(--white-color);
+}
+
+/*
+	Clues style
+*/
+aside.puzzle-clues {
+	float: left;
+	width: 40%;
+
+	.title {
+		color: var(--accent-color);
+		user-select: none;
+	}
+
+	.clue {
+		font-size: 1.2em;
+		margin: .3em;
+		line-height: 1.6em;
+		list-style: none;
+		padding: 5px;
+		color: var(--text-color);
+		border-radius: 5px;
+
+		.number {
+			color: var(--accent-color);
+			user-select: none;
+			font-weight: bold;
+		}
+
+		&.clue-done {
+			color: var(--light-black-color);
+			text-decoration: line-through;
+			user-select: none;
+		}
+	}
+}
