@@ -26,7 +26,6 @@ html {
 		--text-color: hsl(220, 50%, 85%);
 	}
 
-
 	background-color: var(--light-white-color);
 	font: 62.5%/1.3em Helvetica, sans-serif;
 	width: 100%;
@@ -35,14 +34,15 @@ html {
 	body {
 		box-sizing: border-box;
 		margin: 10px auto;
+
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		flex-direction: row;
 	}
 }
 
 .puzzle-wrapper {
-	float: left;
-	width: 54%;
-	margin: auto 3%;
-
 	table.puzzle { 
 		border-collapse: collapse; 
 		border-spacing: 0; 
@@ -72,8 +72,9 @@ html {
 				color: var(--text-color);
 				background-color: var(--white-color);
 			
-				&:focus {
+				&:focus, &::selection {
 					background-color: var(--light-white-color);
+					color: var(--light-black-color);
 				}
 
 				&.done {
@@ -88,14 +89,15 @@ html {
 				font-size: 0.8em;
 				position: absolute;
 				left: 1px;
+				top: -1px;
 				user-select: none;
 			
-				&.across {
+				/*&.across {
 					bottom: -1px;
 				}
 				&.down {
 					top: -1px;
-				}
+				}*/
 			}
 		}
 	}
@@ -109,8 +111,8 @@ html {
 	Clues style
 */
 aside.puzzle-clues {
-	float: left;
-	width: 40%;
+	max-width: 40%;
+	min-width: 30%;
 
 	.title {
 		color: var(--accent-color);
