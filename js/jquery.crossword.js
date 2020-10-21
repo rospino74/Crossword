@@ -305,11 +305,13 @@
 					
 						$('.clues-active').addClass('clue-done');
 
-						solved.push(valToCheck);
-						solvedToggle = true;
-						
-						//Updading the progressbar
-						util.updateProgessbar();
+						if(!solved.includes(valToCheck)) {
+							solved.push(valToCheck);
+							solvedToggle = true;
+
+							//Updading the progressbar
+							util.updateProgessbar();
+						}
 						
 						//If the user win this will invoke the callback
 						if(util.hasWon() && puzz.onWon) {
