@@ -11,7 +11,7 @@
 		).then(
 			rawResponse => rawResponse.json()
 		).then(parsedResponse => {
-			$('main.puzzle-wrapper').crossword(
+			$('.puzzle-container').crossword(
 				parsedResponse, 
 				() => alert('End!')
 			);

@@ -26,10 +26,14 @@
 			
 			// append clues markup after puzzle wrapper div
 			// This should be moved into a configuration object
-			$('aside.puzzle-clues').append('<h2 class="title">Orizzontali</h2><ul class="across"></ul><h2 class="title">Verticali</h2><ul class="down"></ul>');
+			this.append('<aside class="puzzle-clues"><!-- Qua appariranno i suggerimenti --><h2 class="title">Orizzontali</h2><ul class="across"></ul><h2 class="title">Verticali</h2><ul class="down"></ul></aside>');
 			
 			// initialize some variables
-			var tbl = ['<table class="puzzle">'],
+			var tbl = [
+					'<main class="puzzle-wrapper">',
+					'<!-- Il cruciverba apparirà qua -->',
+					'<table class="puzzle">'
+				],
 			    puzzEl = this,
 				clues = $('aside.puzzle-clues'),
 				clueLiEls,
@@ -220,6 +224,7 @@
 					};
 
 					tbl.push("</table>");
+					tbl.push("</main>")
 					puzzEl.append(tbl.join(''));
 				},
 				
