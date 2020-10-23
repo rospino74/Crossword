@@ -26,20 +26,21 @@ Per il funzionamento del plugin è necessario includere JQuery e i fogli di stil
 Per installare ed utilizzare il cruciverba è necessario seguire i seguenti passaggi:
 ### Guida Semplice 👶
 * Scarica [questo archivio `.zip`](https://github.com/rospino74/Crossword/releases/latest)
-* Modifica puzzleData.json secondo [questo schema](https://github.com/rospino74/Crossword#schema-puzzledata.json)
+* Modifica puzzleData.json secondo [questo schema](https://github.com/rospino74/Crossword#schema-puzzledatajson)
 ### Guida Avanzata 👩‍💻
 * Clona il repository o scarica [questo archivio `.zip`](https://github.com/rospino74/Crossword/releases/latest)
 * Modifica i file come preferisci, ricordandoti di ricompilare i file [`.scss`](https://github.com/rospino74/Crossword/search?l=scss)!
-* Modifica `puzzleData.json` secondo [questo schema](https://github.com/rospino74/Crossword#schema-puzzledata.json)
+* Modifica `puzzleData.json` secondo [questo schema](https://github.com/rospino74/Crossword#schema-puzzledatajson)
 * Aggiungi il seguente pezzo di codice dove vuoi che il cruciverba compaia:
  ```html
- <div class="puzzle-container">
-		<!-- Qua appariranno sia i clues che il cruciverba-->
- </div>
+<div class="puzzle-container">
+        <!-- Qua appariranno sia i clues che il cruciverba-->
+</div>
+
 <!-- Foglio di stile per il cruciverba -->
 <link rel="stylesheet" href="css/main.css"/>
 
-<!-- Import di JQuery del plugin e dello script -->
+<!-- Import di JQuery, del plugin e dello script -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
         crossorigin="anonymous"></script>
@@ -47,6 +48,8 @@ Per installare ed utilizzare il cruciverba è necessario seguire i seguenti pass
 <script src="js/script.js"></script>
  ```
 ### Schema puzzleData.json
+**⚠️ Importante**: Ogni riga deve avere un'attributo *position* unico, ad eccezione delle righe che iniziano nella stessa casella.
+
 #### Tabella delle chiavi
 | Chiave | Tipo | Valore |
 | :--- | :---: | :---|
@@ -60,21 +63,22 @@ Per installare ed utilizzare il cruciverba è necessario seguire i seguenti pass
 #### Esempio di file
 ```json
 [
-    {
-       "clue": "Prima lettera dell'alfabeto greco",
-       "answer": "alpha",
-       "position": 2,
-       "orientation": "across",
-       "startx": 1,
-       "starty": 3
+   {
+      "clue": "L'orologio segna l'____",
+      "answer": "ora",
+      "position": 1,
+      "orientation": "down",
+      "startx": 5,
+      "starty": 1
    },
    {
-    "clue": "L'orologio segna l'____",
-    "answer": "ora",
-    "position": 1,
-    "orientation": "down",
-    "startx": 5,
-    "starty": 1
-    }
+      "clue": "Prima lettera dell'alfabeto greco",
+      "answer": "alpha",
+      "position": 2,
+      "orientation": "across",
+      "startx": 1,
+      "starty": 3
+   }
 ]
 ```
+**ℹ️ Consiglio**: Per facilitare la lettura, ti conviene mettere le righe in ordine di posizione o di orientamento
