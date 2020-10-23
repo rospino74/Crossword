@@ -265,9 +265,10 @@
 					};	
 					
 					// Put entry number in first 'light' of each entry, skipping it if already present
-					for (var i=1, p = entryCount; i < p; ++i) {
+					for (var i=0, p = entryCount; i < p; ++i) {
 						$groupedLights = $('.entry-' + i);
-						if(!$('.entry-' + i +':eq(0) span').length){
+						let length = $('.entry-' + i +':eq(0) span').length;
+						if(length == 0){
 							$groupedLights.eq(0)
 								.append('<span class="' + puzz.data[i].orientation + '">' + puzz.data[i].position + '</span>');
 						}
@@ -276,8 +277,7 @@
 					util.highlightEntry();
 					util.highlightClue();
 					$('.active').eq(0).focus();
-					$('.active').eq(0).select();
-										
+					$('.active').eq(0).select();	
 				},
 				
 				
